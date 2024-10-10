@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(username, password); // Anropar login-funktionen
+    try {
+      await login(username, password);
 
-    // Om användaren loggar in som admin eller user kan du navigera dem till rätt sida.
-    if (username === 'admin') {
-      navigate('/adminpage');
-    } else if (username === 'user') {
-      navigate('/userpage');
+      if (username === "admin") {
+        navigate("/adminpage");
+      } else if (username === "user") {
+        navigate("/userpage");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
     }
   };
 
