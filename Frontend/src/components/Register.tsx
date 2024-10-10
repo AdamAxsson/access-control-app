@@ -1,3 +1,5 @@
+// Register.tsx
+
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
@@ -13,7 +15,7 @@ const Register: React.FC = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/register', {
+      const response = await fetch('http://localhost:5000/api/register', { // Använd fullständig URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,7 +24,8 @@ const Register: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Registration failed');
+        const data = await response.json();
+        throw new Error(data.message || 'Registration failed');
       }
 
       const data = await response.json();
