@@ -21,10 +21,10 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src/**/*",  // Inkludera alla TypeScript-filer i 'src'-mappen
+    "Frontend/src/**/*",  // Inkludera alla TypeScript-filer i 'src'-mappen
     "server.ts"  // Inkludera server.ts
   ],
   "exclude": [
-    "node_modules"  // Uteslut 'node_modules'-mappen
+    "Frontend/node_modules"  // Uteslut 'node_modules'-mappen
   ]
 }
