@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import UserPage from './components/UserPage';
+import AdminPage from './components/AdminPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
+import Register from './components/Register';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Login Route */}
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register/>} />
+
+          
+          {/* Protected Route for user */}
+          <Route element={<ProtectedRoute requiredRole="user" />}>
+            <Route path="/userpage" element={<UserPage />} />
+          </Route>
+
+          {/* Protected Route for admin */}
+          <Route element={<ProtectedRoute requiredRole="admin" />}>
+            <Route path="/adminpage" element={<AdminPage />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
-}
+};
 
 export default App;
