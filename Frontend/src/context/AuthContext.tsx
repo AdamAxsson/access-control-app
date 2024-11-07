@@ -4,6 +4,7 @@ import axios from "axios";
 interface User {
   username: string;
   role: "admin" | "user";
+  token: string; // Lägg till token i User-typen
 }
 
 interface AuthContextType {
@@ -25,8 +26,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         username,
         password,
       });
-      const { user: loggedInUser } = response.data;
-      setUser(loggedInUser);
+      const { user: loggedInUser, token } = response.data; // Anta att token kommer med svaret
+      setUser({ ...loggedInUser, token }); // Spara även token
+
+      // Spara token i localStorage eller sessionStorage om så önskas
+      localStorage.setItem("token", token);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         alert(error.response.data.message || "Invalid credentials");
@@ -38,6 +42,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const logout = () => {
     setUser(null);
+    // Rensa token från localStorage eller sessionStorage
+    localStorage.removeItem("token");
   };
 
   return (

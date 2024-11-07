@@ -1,37 +1,34 @@
-// Register.tsx
-
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+// import { useAuth } from "../context/AuthContext";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"user" | "admin">("user");
   const [error, setError] = useState<string | null>(null);
-  const { login } = useAuth();
+  // const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const apiRequest = async (url: string, body: object) => {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+    return data;
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password, role }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Registration failed");
-      }
-
-      const data = await response.json();
-      console.log(data.message);
-
-      login(username, password);
+      await apiRequest("http://localhost:5000/api/check-password", { username, password });
+      await apiRequest("http://localhost:5000/api/register", { username, password, role });
+      navigate("/");
     } catch (err: any) {
       setError(err.message);
     }
@@ -66,10 +63,7 @@ const Register: React.FC = () => {
         <div>
           <label>
             Role:
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value as "user" | "admin")}
-            >
+            <select value={role} onChange={(e) => setRole(e.target.value as "user" | "admin")}>
               <option value="user">User</option>
               <option value="admin">Admin</option>
             </select>
