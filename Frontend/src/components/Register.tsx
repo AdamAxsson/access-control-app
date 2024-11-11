@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../context/AuthContext";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"user" | "admin">("user");
   const [error, setError] = useState<string | null>(null);
-  // const { login } = useAuth();
   const navigate = useNavigate();
 
   const apiRequest = async (url: string, body: object) => {
@@ -25,10 +22,32 @@ const Register: React.FC = () => {
     e.preventDefault();
     setError(null);
 
+    // Frontend validation for username and password
+    if (!/^[a-zA-Z0-9]+$/.test(username)) {
+      setError("Username must only contain letters and numbers.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
     try {
+      // Check password validity on the backend
       await apiRequest("http://localhost:5000/api/check-password", { username, password });
-      await apiRequest("http://localhost:5000/api/register", { username, password, role });
-      navigate("/");
+
+      // Register the user
+      const registerData = await apiRequest("http://localhost:5000/api/register", { username, password });
+
+      // Assuming registerData contains a JWT token
+      const token = registerData.token; // Make sure the backend sends the token on successful registration
+
+      // Store the JWT token in localStorage or a cookie (make sure it's secure)
+      localStorage.setItem("jwtToken", token);
+
+      // Navigate to the user's page (replace "/user" with the correct user page path)
+      navigate("/userpage");
     } catch (err: any) {
       setError(err.message);
     }
@@ -58,15 +77,6 @@ const Register: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </label>
-        </div>
-        <div>
-          <label>
-            Role:
-            <select value={role} onChange={(e) => setRole(e.target.value as "user" | "admin")}>
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
           </label>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}

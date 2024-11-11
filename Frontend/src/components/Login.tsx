@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -8,6 +8,7 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigateRegister = () => {
     navigate("/register");
@@ -16,17 +17,17 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Utökad validering av specialtecken
     const specialCharRegex = /[<>&"';]/;
     if (specialCharRegex.test(username) || specialCharRegex.test(password)) {
       alert("Special characters like '<', '>', '&', etc., are not allowed.");
       return;
     }
 
+    setIsLoading(true);
+
     try {
       await login(username, password);
-      
-      // Om inloggning lyckas, navigera beroende på roll
+
       if (username === "admin") {
         navigate("/adminpage");
       } else if (username === "user") {
@@ -35,22 +36,31 @@ const Login: React.FC = () => {
     } catch (error: any) {
       console.error("Login failed:", error);
 
-      // Hantera inloggningsfel
       if (error.message.includes("Account locked")) {
         setErrorMessage("Account temporarily locked due to too many failed login attempts. Please try again later.");
+      } else if (error.response?.status === 500) {
+        setErrorMessage("Server error. Please try again later.");
       } else {
         setErrorMessage("Invalid username or password.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    document.getElementById("username")?.focus();
+  }, []);
 
   return (
     <>
       <div>
         <h2>Login</h2>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        {isLoading && <p><i className="fa fa-spinner fa-spin" /> Loading...</p>}
         <form onSubmit={handleSubmit}>
           <input
+            id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -64,7 +74,7 @@ const Login: React.FC = () => {
             placeholder="Password"
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit" disabled={isLoading}>Login</button>
         </form>
       </div>
       <div>
