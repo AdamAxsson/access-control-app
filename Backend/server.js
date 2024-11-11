@@ -211,7 +211,7 @@ const logLoginAttempt = async (username, success, req, reason = "") => {
 
 app.post("/api/login", loginLimiter, [
   body("username").isAlphanumeric().trim().escape(),
-  body("password").isLength({ min: 8 }).trim(),
+  // body("password").isLength({ min: 8 }).trim(),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
