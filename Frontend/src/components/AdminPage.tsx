@@ -31,7 +31,7 @@ const AdminPage: React.FC = () => {
         const response = await axios.post("/api/products", {
           name: productName,
           price: productPrice,
-          quantity: productStock, // Ändra stock till quantity här
+          quantity: productStock, 
 
       });
 

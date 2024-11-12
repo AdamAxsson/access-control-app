@@ -16,33 +16,14 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const specialCharRegex = /[<>&"';]/;
-    if (specialCharRegex.test(username) || specialCharRegex.test(password)) {
-      alert("Special characters like '<', '>', '&', etc., are not allowed.");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
       await login(username, password);
-
-      if (username === "admin") {
-        navigate("/adminpage");
-      } else if (username === "user") {
-        navigate("/userpage");
-      }
+      navigate(username === "admin" ? "/adminpage" : "/userpage");
     } catch (error: any) {
       console.error("Login failed:", error);
-
-      if (error.message.includes("Account locked")) {
-        setErrorMessage("Account temporarily locked due to too many failed login attempts. Please try again later.");
-      } else if (error.response?.status === 500) {
-        setErrorMessage("Server error. Please try again later.");
-      } else {
-        setErrorMessage("Invalid username or password.");
-      }
+      setErrorMessage(error.response?.data.message || "Invalid username or password.");
     } finally {
       setIsLoading(false);
     }

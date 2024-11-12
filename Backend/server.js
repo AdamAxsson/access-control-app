@@ -7,7 +7,7 @@
   const rateLimit = require("express-rate-limit");
   const { body, validationResult } = require("express-validator");
   const jwt = require("jsonwebtoken");
-  const moment = require("moment-timezone"); // Lägg till moment-timezone
+  const moment = require("moment-timezone"); 
   const winston = require('winston');
   const fs = require("fs");
 
@@ -48,17 +48,16 @@
     })
   );
   
-  // Om du använder andra helmet-middleware kan du också konfigurera dem
-  // till exempel:
   app.use(helmet.hsts({ maxAge: 31536000, includeSubDomains: true, preload: true }));  // Aktivera HTTP Strict Transport Security (HSTS)
   app.use(helmet.referrerPolicy({ policy: "no-referrer" }));  // Förhindra referrer-information från att skickas
+
   // JWT Authentication middleware
   const authenticateJWT = async (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) return res.sendStatus(401);
     try {
       const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded; // Sätt hela decoded payload till req.user
+      req.user = decoded; 
       next();
     } catch (err) {
       res.sendStatus(403);
@@ -71,17 +70,8 @@
     .then(() => console.log("MongoDB connected"))
     .catch(console.error);
 
+
   // Models
-
-  // const loginAttemptSchema = new mongoose.Schema({
-  //   username: { type: String, required: true },
-  //   success: { type: Boolean, required: true },
-  //   timestamp: { type: Date, default: Date.now },
-  //   ip: { type: String, required: true },
-  //   userAgent: { type: String, required: true },
-  // });
-  // const LoginAttempt = mongoose.model("LoginAttempt", loginAttemptSchema);
-
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -111,7 +101,7 @@ const Product = mongoose.model("Product", productSchema);
     const hasNumber = /[0-9]/.test(password);
     const isNotUsername = password !== username;
     const isNotCommon = !COMMON_PASSWORDS.includes(password);
-    const isNotRepeating = !/^(.)\1+$/.test(password); // Förhindra upprepning av samma tecken
+    const isNotRepeating = !/^(.)\1+$/.test(password); 
 
     return (
       hasMinLength &&
@@ -126,22 +116,22 @@ const Product = mongoose.model("Product", productSchema);
 
   // Skapa en logger med Winston
 const logger = winston.createLogger({
-  level: 'info', // Loggnivå (info, warn, error, etc.)
+  level: 'info',
   transports: [
     // Skriv loggar till terminalen (Console)
     new winston.transports.Console({
       format: winston.format.combine(
-        winston.format.colorize(), // Färga loggar i terminalen
-        winston.format.simple() // Enkel loggformat
+        winston.format.colorize(), 
+        winston.format.simple() 
       )
     }),
     // Skriv loggar till fil
     new winston.transports.File({ 
-      filename: 'login_attempts.log', // Filen där loggarna sparas
-      level: 'info', // Loggnivå för filen
+      filename: 'login_attempts.log', 
+      level: 'info', 
       format: winston.format.combine(
-        winston.format.timestamp(), // Lägg till tidsstämpel
-        winston.format.json() // Formatera loggen som JSON
+        winston.format.timestamp(), 
+        winston.format.json() 
       )
     })
   ]
@@ -168,37 +158,15 @@ const logger = winston.createLogger({
     max: 5,
     message: "Too many login attempts, try again later.",
   });
- // Function to log login attempts
-// Function to log login attempts
-// const logLoginAttempt = async (username, success, req) => {
-//   const ip = req.ip || req.connection.remoteAddress || "127.0.0.1";
-//   const userAgent = req.headers["user-agent"] || "Unknown";
-//   const localDate = moment().tz("Europe/Stockholm").format("YYYY-MM-DD HH:mm:ss");
 
-//   // Kontrollera om funktionen körs och logga variabler
-//   console.log("logLoginAttempt körs:");
-//   console.log(`Användarnamn: ${username}, Lyckades: ${success}, IP: ${ip}, User-Agent: ${userAgent}, Datum: ${localDate}`);
-
-//   try {
-//     // Logga i terminalen
-//     console.log(`[${localDate}] Inloggningsförsök: ${username} | Lyckades: ${success ? "Ja" : "Nej"} | IP: ${ip} | User-Agent: ${userAgent}`);
-
-//     // Spara i databasen, om detta behövs
-//     await LoginAttempt.create({ username, success, ip, userAgent });
-//   } catch (error) {
-//     console.error("Fel vid loggning av inloggningsförsök:", error);
-//   }
-// };
 
 const logLoginAttempt = async (username, success, req, reason = "") => {
   const ip = req.ip || req.connection.remoteAddress || "127.0.0.1";
   const userAgent = req.headers["user-agent"] || "Unknown";
   const localDate = moment().tz("Europe/Stockholm").format("YYYY-MM-DD HH:mm:ss");
 
-  // Logga till terminalen
   console.log(`[${localDate}] Inloggningsförsök: ${username} | Lyckades: ${success ? "Ja" : "Nej"} | IP: ${ip} | User-Agent: ${userAgent} | Orsak: ${reason}`);
 
-  // Logga till en fil
   const logMessage = `${localDate} | ${username} | ${success ? "Lyckades" : "Misslyckades"} | IP: ${ip} | User-Agent: ${userAgent} | Orsak: ${reason}\n`;
 
   fs.appendFile("login_attempts.log", logMessage, (err) => {
@@ -210,41 +178,44 @@ const logLoginAttempt = async (username, success, req, reason = "") => {
 
 
 app.post("/api/login", loginLimiter, [
-  body("username").isAlphanumeric().trim().escape(),
-  // body("password").isLength({ min: 8 }).trim(),
+  // Validera användarnamn och lösenord
+  body("username").isAlphanumeric().trim().escape().isLength({ min: 3 }),
+  body("password").isLength({ min: 8 }).trim(),
 ], async (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
   const { username, password } = req.body;
 
   try {
-    // 1. Kontrollera om användaren finns
+    // Kontrollera om användaren finns
     const user = await UserModel.findOne({ username });
     if (!user) {
-      // Logga om användarnamnet inte finns
-      await logLoginAttempt(username, false, req, "Användarnamn finns inte");
+      // Logga och skicka generell felmeddelande
+      await logLoginAttempt(username, false, req, "Användarnamnet finns inte");
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 2. Kontrollera lösenordet
+    // Kontrollera lösenordets giltighet
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      // Logga om lösenordet inte är korrekt
       await logLoginAttempt(username, false, req, "Fel lösenord");
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 3. Om inloggningen lyckades, skapa och skicka tillbaka JWT
-    const token = jwt.sign({
-      username: user.username,
-      role: user.role,
-      id: user._id // Lägg till användarens id här
-    }, process.env.JWT_SECRET, { expiresIn: '20m' });
+    // Skapa JWT-token
+    const token = jwt.sign(
+      { username: user.username, role: user.role, id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '20m' }
+    );
 
     // Logga lyckat inloggningsförsök
     await logLoginAttempt(username, true, req);
 
+    // Skicka tillbaka svar
     return res.status(200).json({
       message: "Login successful",
       user: { username: user.username, role: user.role },
@@ -252,22 +223,38 @@ app.post("/api/login", loginLimiter, [
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Login error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-
 app.post("/api/register", [
-  body("username").isAlphanumeric().trim().escape(),  // Samma validering för användarnamn som i login
-  body("password").isLength({ min: 8 }).trim(),  // Lösenord ska vara minst 8 tecken lång
+  body("username")
+    .isAlphanumeric()
+    .trim()
+    .escape()
+    .withMessage("Username must only contain letters and numbers."),
+  body("password")
+    .isString()
+    .trim()
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long.")
+    .custom((value) => {
+      // Förstärkning av lösenordskontroll för att tillåta 20 tecken för hög säkerhet
+      const isStrongEnough = value.length >= 8 && value.length < 20;
+      const isExtraStrong = value.length >= 20;
+      if (!isStrongEnough && !isExtraStrong) {
+        throw new Error("Password must be at least 8 characters or 20+ characters for extra security.");
+      }
+      return true;
+    })
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
   const { username, password } = req.body;
 
-  // Kontrollera lösenordets styrka
+  // Kontrollera lösenordets styrka med befintlig funktion
   if (!isPasswordStrong(username, password)) {
     return res.status(400).json({ message: "Password is too weak" });
   }
@@ -278,28 +265,31 @@ app.post("/api/register", [
       return res.status(400).json({ message: "Username already exists" });
     }
 
-    // Hasha lösenordet
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Hashar och saltar lösenordet (saltrundor 12 för högre säkerhet)
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     // Skapa den nya användaren
     const user = await UserModel.create({
       username,
       password: hashedPassword,
-      role: "user",  // Sätt rollen till "user" om inget annat anges
+      role: "user"
     });
 
     // Skapa JWT-token
-    const token = jwt.sign({
-      username: user.username,
-      role: user.role,
-      id: user._id  // Användarens ID
-    }, process.env.JWT_SECRET, { expiresIn: '20m' });
+    const token = jwt.sign(
+      { username: user.username, role: user.role, id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '20m' }
+    );
+
+    // Säkerhetsloggning för registreringsförsök (valfritt)
+    console.log(`[REGISTRATION ATTEMPT] User: ${username} registered successfully at ${new Date().toISOString()}`);
 
     // Skicka tillbaka svar
     return res.status(201).json({
       message: "User registered successfully",
       user: { username: user.username, role: user.role },
-      token  // Skicka med JWT-token i svaret
+      token
     });
   } catch (error) {
     console.error("Failed to register user:", error);
@@ -307,21 +297,7 @@ app.post("/api/register", [
   }
 });
 
-
-  // app.get("/api/login-attempts", authenticateJWT, async (req, res) => {
-  //   if (req.user.role !== "admin") return res.status(403).json({ message: "Access denied" });
-
-  //   try {
-  //     const attempts = await LoginAttempt.find().sort({ timestamp: -1 }).limit(100);
-  //     res.status(200).json(attempts);
-  //   } catch (error) {
-  //     console.error("Failed to retrieve login attempts:", error);
-  //     res.status(500).json({ message: "Server error" });
-  //   }
-  // });
-
   app.post("/api/reserve", authenticateJWT, async (req, res) => {
-    console.log("User ID from JWT:", req.user.id); // Lägg till en logg här för att se om ID finns
     
     const { productId, quantity } = req.body;
     
@@ -423,24 +399,6 @@ app.post("/api/register", [
       res.status(500).json({ message: "Server error" });
     }
   });
-  
-
-// const products = [
-//   { name: "Laptop", quantity: 10, price: 7999.99, reservedBy: [] },
-//   { name: "Smartphone", quantity: 20, price: 4999.99, reservedBy: [] },
-//   { name: "Headphones", quantity: 50, price: 899.99, reservedBy: [] }
-// ];
-
-// // Skapa produkterna i databasen
-// Product.insertMany(products)
-//   .then((result) => {
-//     console.log("Produkter skapade:", result);
-//     mongoose.disconnect();  // Koppla bort från databasen när vi är klara
-//   })
-//   .catch((error) => {
-//     console.error("Fel vid skapande av produkter:", error);
-//     mongoose.disconnect();  // Koppla bort även om det uppstår ett fel
-//   });
 
 
   // Start the server

@@ -30,3 +30,25 @@
 2024-11-11 13:32:12 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
 2024-11-11 13:33:50 | asd | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Användarnamn finns inte
 2024-11-11 13:34:11 | klar | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Användarnamn finns inte
+2024-11-11 21:02:52 | admin | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-11 21:03:24 | Adam | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-11 21:05:36 | asd | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Användarnamn finns inte
+2024-11-11 21:06:01 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 21:06:05 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 22:05:07 | user | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-11 22:06:22 | admin | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-11 22:06:46 | admin | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-11 22:10:16 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 22:10:21 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 22:10:26 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 22:10:31 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 22:10:38 | user | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 22:15:42 | test3 | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-11 22:15:48 | test3 | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-11 22:16:45 | asd | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Användarnamn finns inte
+2024-11-11 22:25:02 | user | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-12 21:49:58 | test1 | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-12 21:54:13 | test3 | Misslyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: Fel lösenord
+2024-11-12 21:54:18 | test3 | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-12 22:09:13 | test3 | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 
+2024-11-12 22:19:44 | test3 | Lyckades | IP: ::1 | User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15 | Orsak: 

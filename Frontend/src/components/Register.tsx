@@ -22,31 +22,12 @@ const Register: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    // Frontend validation for username and password
-    if (!/^[a-zA-Z0-9]+$/.test(username)) {
-      setError("Username must only contain letters and numbers.");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
-      return;
-    }
-
     try {
-      // Check password validity on the backend
-      await apiRequest("http://localhost:5000/api/check-password", { username, password });
-
-      // Register the user
+      // Endast skicka användarnamn och lösenord utan att validera på frontend
       const registerData = await apiRequest("http://localhost:5000/api/register", { username, password });
 
-      // Assuming registerData contains a JWT token
-      const token = registerData.token; // Make sure the backend sends the token on successful registration
-
-      // Store the JWT token in localStorage or a cookie (make sure it's secure)
+      const token = registerData.token; 
       localStorage.setItem("jwtToken", token);
-
-      // Navigate to the user's page (replace "/user" with the correct user page path)
       navigate("/userpage");
     } catch (err: any) {
       setError(err.message);

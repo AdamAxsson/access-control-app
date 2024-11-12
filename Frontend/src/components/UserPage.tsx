@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-import sanitizeHtml from "sanitize-html"; // Importera biblioteket för att sanera användarinmatning
+import sanitizeHtml from "sanitize-html"; 
 
 const UserPage: React.FC = () => {
   const { user, logout } = useAuth();
   const [products, setProducts] = useState<any[]>([]);
   const [error, setError] = useState<string>("");
-  const [message, setMessage] = useState<string>(""); // För att lagra meddelandet
-  const [chatMessages, setChatMessages] = useState<string[]>([]); // För att lagra tidigare meddelanden
+  const [message, setMessage] = useState<string>(""); 
+  const [chatMessages, setChatMessages] = useState<string[]>([]); 
 
   // Hämta produkter från servern
   useEffect(() => {
@@ -78,7 +78,7 @@ const UserPage: React.FC = () => {
   const handleSendMessage = () => {
     if (message.trim()) {
       const sanitizedMessage = sanitizeHtml(message, {
-        allowedTags: [ 'b', 'i', 'em', 'strong', 'p' ], // Tillåt säkra taggar
+          allowedTags: [ 'b', 'i', 'em', 'strong', 'p' ], // Tillåt säkra taggar
         allowedAttributes: {} // Förhindra alla attribut (t.ex. href, onclick etc.)
       });
 
@@ -88,7 +88,7 @@ const UserPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div> 
       <h1>Welcome to the User Page, {user?.username}!</h1>
       <button onClick={logout}>Logout</button>
 
